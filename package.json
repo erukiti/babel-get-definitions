@@ -1,0 +1,27 @@
+{
+  "name": "babel-helper-get-defines",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "^7.0.0-beta.3",
+    "babel-helper": "file:///Users/erukiti/work/babel-helper",
+    "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3"
+  },
+  "devDependencies": {
+    "@types/babel-core": "^6.25.3",
+    "@types/node": "^8.0.47",
+    "autodebugger": "^0.2.0",
+    "babel-preset-power-assert": "^1.0.0",
+    "babel-register": "^6.26.0",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.5.3"
+  }
+}

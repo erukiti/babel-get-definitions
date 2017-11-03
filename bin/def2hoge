@@ -1,0 +1,8 @@
+#! /usr/bin/env node
+
+// require('ts-node').register()
+// require('autodebugger').install({printTrace: true})
+require('babel-register')({
+    presets: ['power-assert']
+})
+require('../src')
