@@ -1,6 +1,29 @@
 const {helper} = require('babel-helper')
 const assert = require('assert')
-const fields = (t, name, propPath, getProp) => {
+
+const convertValidateCaller = (nodePath) => {
+    switch (nodePath.node.callee.name) {
+        case 'assertValueType':
+        case 'assertNodeType': {
+            return nodePath.node.arguments.map(node => {
+                assert(node.type === 'StringLiteral')
+                return node.value
+            })
+        }
+
+        case 'assertOneOf': {
+            return [nodePath.node.arguments[0].argument.name]
+        }
+
+        default: {
+            console.log(nodePath.node)
+            assert(false)
+        }
+    }
+}
+
+// FIXME name を消す
+const fields = (t, name, propPath, pushValidate) => {
     propPath.get('value.properties').map(propPath2 => {
         if (propPath2.type === 'SpreadElement') {
             return
@@ -43,51 +66,10 @@ const fields = (t, name, propPath, getProp) => {
                 }
                 assert(propPath3.node.value.type === 'CallExpression')
 
-                switch (propPath3.node.value.callee.name) {
-                    case 'assertValueType':
-                    case 'assertNodeType': {
-                        propPath3.node.value.arguments.forEach(n => {
-                            assert(n.type === 'StringLiteral')
-                            getProp(name, key2).validate.push(n.value)
-                        })
-
-                        break
-                    }
-                    case 'assertOneOf': {
-                        if (name === 'CallExpression' && key2 === 'optional') {
-                            assert(propPath3.node.value.arguments.length === 2)
-                            assert(propPath3.node.value.arguments[0].type === 'BooleanLiteral')
-                            assert(propPath3.node.value.arguments[1].type === 'BooleanLiteral')
-                            return
-                        }
-                        if (name === 'Program' && key2 === 'sourceType') {
-                            return
-                        }
-                        if (propPath3.node.value.arguments.length !== 1) {
-                            console.log(name, propPath3.node.value.arguments)
-                            assert(false)
-                        }
-                        assert(propPath3.node.value.arguments.length === 1)
-                        assert(propPath3.node.value.arguments[0].type === 'SpreadElement')
-                        assert(propPath3.node.value.arguments[0].argument.type === 'Identifier')
-                        getProp(name, key2).validate.push(propPath3.node.value.arguments[0].argument.name)
-                        break
-                    }
-
-                    case 'chain': {
-                        return
-                        // console.log(name)
-                        // console.log(propPath3.node.value.arguments)
-                        // assert(false)
-                        // break
-                    }
-
-                    default: {
-                        console.log(name, key2, propPath3.node.value.callee.name)
-                        console.log(propPath3.node.value)
-                        assert(false)
-                    }
-                }
+                const validates = convertValidateCaller(propPath3.get('value'))
+                validates.forEach(validate => {
+                    pushValidate(key2, validate)
+                })
             })
         // const validatePath = propPath2.get('value.properties').find(vPath => vPath.node.key.name === 'validate')
 
@@ -95,4 +77,4 @@ const fields = (t, name, propPath, getProp) => {
     })
 }
 
-module.exports = {fields}
+module.exports = {fields, convertValidateCaller}

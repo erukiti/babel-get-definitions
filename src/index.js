@@ -82,6 +82,13 @@ const plugin = babel => {
         return definedTypes[name].props[key]
     }
 
+    const propBuild = (propPath, cb) => {
+        const keys = helper
+            .find(propPath, t, 'value.elements.*', ['ArrayExpression', null, 'StringLiteral'])
+            .nodePaths.map(p => p.node.value)
+        cb(keys)
+    }
+
     const visitor = {
         CallExpression: (nodePath, state) => {
             if (!t.is('Identifier', nodePath.node.callee, {name: 'defineType'})) {
@@ -107,34 +114,29 @@ const plugin = babel => {
                     const key = propPath.node.key.name
                     switch (key) {
                         case 'fields': {
-                            fields(t, name, propPath, getProp)
+                            fields(t, name, propPath, (key2, validate) => {
+                                getProp(name, key2).validate.push(validate)
+                            })
                             break
                         }
+
+                        case 'visitor':
+                        case 'aliases':
                         case 'builder': {
-                            const keys = helper
-                                .find(propPath, t, 'value.elements.*', ['ArrayExpression', null, 'StringLiteral'])
-                                .nodePaths.map(p => p.node.value)
-                            keys.forEach(k => (getProp(name, k).isBuild = true))
+                            const cb = {
+                                'builder': (keys) => keys.forEach(k => (getProp(name, k).isBuild = true)),
+                                'visitor': (keys) => keys.forEach(k => (getProp(name, k).isVisit = true)),
+                                'aliases': (keys) => definedTypes[name].aliases = keys
+                            }
+                            propBuild(propPath, cb[key])
                             break
                         }
-                        case 'visitor': {
-                            const keys = helper
-                                .find(propPath, t, 'value.elements.*', ['ArrayExpression', null, 'StringLiteral'])
-                                .nodePaths.map(p => p.node.value)
-                            keys.forEach(k => (getProp(name, k).isVisit = true))
-                            break
-                        }
-                        case 'aliases': {
-                            const keys = helper
-                                .find(propPath, t, 'value.elements.*', ['ArrayExpression', null, 'StringLiteral'])
-                                .nodePaths.map(p => p.node.value)
-                            definedTypes[name].aliases = keys
-                            break
-                        }
+
                         case 'deprecatedAlias':
                         case 'inherits': {
                             return
                         }
+
                         default: {
                             throw new Error(`unknown: ${key}`)
                         }
