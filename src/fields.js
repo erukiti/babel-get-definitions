@@ -82,12 +82,15 @@ const convertValidateCaller = (nodePath, arrayType = null) => {
     }
 }
 
-// FIXME name を消す
 const fields = (t, propPath, pushValidate) => {
     propPath.get('value.properties').map(propPath2 => {
-        if (propPath2.type === 'SpreadElement') {
-            return
-        }
+        // if (propPath2.type === 'SpreadElement') {
+        //     const name = propPath2.node.argument.name
+        //     console.log(name)
+        //     // console.log(propPath2.scope.bindings['functionCommon'].path.node)
+        //     // process.exit(1)
+        //     return
+        // }
         const key2 = propPath2.node.key.name
         helper
             .find(propPath2, t, 'value.properties.*', ['ObjectExpression', null, 'ObjectProperty'])
@@ -111,9 +114,6 @@ const fields = (t, propPath, pushValidate) => {
 
                 pushValidate(key2, convertValidateCaller(propPath3.get('value')))
             })
-        // const validatePath = propPath2.get('value.properties').find(vPath => vPath.node.key.name === 'validate')
-
-        // console.log(key2, validatePath.get('value.callee.name').node, validatePath.get('value.arguments').map(p => p.node.value))
     })
 }
 

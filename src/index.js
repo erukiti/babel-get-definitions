@@ -879,6 +879,26 @@ const plugin = babel => {
     }
 
     const visitor = {
+        Program: (nodePath, state) => {
+            nodePath.traverse({
+                SpreadElement: (nodePath2) => {
+                    if (nodePath2.parent.type === 'CallExpression') {
+                        return
+                    }
+
+                    assert(nodePath2.parent.type === 'ObjectExpression')
+                    const name = nodePath2.node.argument.name
+                    const init = nodePath2.scope.bindings[name].path.node.init
+                    assert(init.type === 'ObjectExpression')
+
+                    nodePath2.replaceWithMultiple(init.properties)
+                    // console.log(init.properties.key.name)
+                    // value
+
+                    // console.log(nodePath2.parentPath.parent)
+                }
+            })
+        },
         CallExpression: (nodePath, state) => {
             if (!t.is('Identifier', nodePath.node.callee, {name: 'defineType'})) {
                 return
