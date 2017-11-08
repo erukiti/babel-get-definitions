@@ -1,18 +1,48 @@
 const {helper} = require('babel-helper')
 const assert = require('assert')
 
+class PropertyValidator {
+    static nodeType(s) {
+        return new PropertyValidator('node', s)
+    }
+
+    static valueType(s) {
+        return new PropertyValidator('value', s)
+    }
+
+    static constChars(s) {
+        return new PropertyValidator('char', s)
+    }
+
+    static constString(s) {
+        return new PropertyValidator('string', s)
+    }
+
+    constructor(type, s) {
+        this.type = type
+        this.s = s
+    }
+}
+
+
+
 const convertValidateCaller = (nodePath) => {
     switch (nodePath.node.callee.name) {
-        case 'assertValueType':
+        case 'assertValueType': {
+            return nodePath.node.arguments.map(node => {
+                assert(node.type === 'StringLiteral')
+                return PropertyValidator.valueType(node.value)
+            })
+        }
         case 'assertNodeType': {
             return nodePath.node.arguments.map(node => {
                 assert(node.type === 'StringLiteral')
-                return node.value
+                return PropertyValidator.nodeType(node.value)
             })
         }
 
         case 'assertOneOf': {
-            return [nodePath.node.arguments[0].argument.name]
+            return [PropertyValidator.constChars(nodePath.node.arguments[0].argument.name)]
         }
 
         default: {
@@ -23,21 +53,12 @@ const convertValidateCaller = (nodePath) => {
 }
 
 // FIXME name を消す
-const fields = (t, name, propPath, pushValidate) => {
+const fields = (t, propPath, pushValidate) => {
     propPath.get('value.properties').map(propPath2 => {
         if (propPath2.type === 'SpreadElement') {
             return
         }
         const key2 = propPath2.node.key.name
-        if (name === 'ObjectProperty' && key2 === 'key') {
-            return
-        }
-        if (name === 'ObjectMethod' && key2 === 'key') {
-            return
-        }
-        if (name === 'WithStatement' && key2 === 'object') {
-            return
-        }
         helper
             .find(propPath2, t, 'value.properties.*', ['ObjectExpression', null, 'ObjectProperty'])
             .nodePaths.map(propPath3 => {
@@ -51,19 +72,8 @@ const fields = (t, name, propPath, pushValidate) => {
                     // console.log(propPath3.node)
                     // process.exit(1)
                 }
-                if (name === 'MemberExpression') {
-                    return
-                }
-                if (propPath3.node.key.name !== 'validate') {
-                    console.log(name, key2)
-                    console.log(propPath3.node)
-                    assert(false)
-                }
+
                 assert(propPath3.node.key.name === 'validate')
-                if (!propPath3.node.value) {
-                    console.log(name, key, key2, propPath3.node)
-                    assert(false)
-                }
                 assert(propPath3.node.value.type === 'CallExpression')
 
                 const validates = convertValidateCaller(propPath3.get('value'))

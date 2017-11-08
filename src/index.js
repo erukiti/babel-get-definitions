@@ -114,7 +114,7 @@ const plugin = babel => {
                     const key = propPath.node.key.name
                     switch (key) {
                         case 'fields': {
-                            fields(t, name, propPath, (key2, validate) => {
+                            fields(t, propPath, (key2, validate) => {
                                 getProp(name, key2).validate.push(validate)
                             })
                             break
