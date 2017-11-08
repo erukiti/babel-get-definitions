@@ -1,4 +1,4 @@
-const {helper} = require('babel-helper')
+const {helper} = require('./helper')
 const assert = require('assert')
 
 class PropertyValidator {
@@ -83,7 +83,11 @@ const convertValidateCaller = (nodePath, arrayType = null) => {
 }
 
 const fields = (t, propPath, pushValidate) => {
-    propPath.get('value.properties').map(propPath2 => {
+    if (propPath.node.value.type === 'Identifier') {
+        return 
+    }
+    assert(propPath.node.value.type === 'ObjectExpression')
+    propPath.get('value.properties').forEach(propPath2 => {
         // if (propPath2.type === 'SpreadElement') {
         //     const name = propPath2.node.argument.name
         //     console.log(name)

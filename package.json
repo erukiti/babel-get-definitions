@@ -1,18 +1,21 @@
 {
-  "name": "babel-helper-get-defines",
+  "name": "babel-get-definitions",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
+  "bin": {
+    "def2md": "bin/def2md"
+  },
   "scripts": {
-    "test": "ava",
-    "start": "ts-node src/index.ts"
+    "build": "tsc",
+    "test": "tsc && ava",
+    "md": "bin/def2md > definitions.md"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "babel-core": "^7.0.0-beta.3",
-    "babel-helper": "file:///Users/erukiti/work/babel-helper",
     "babel-plugin-transform-object-rest-spread": "^7.0.0-beta.3"
   },
   "devDependencies": {
