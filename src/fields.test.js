@@ -11,18 +11,17 @@ const getNodePath = (s) => {
     return NodePath.get({parent: ast, container: ast, key: 'program'}).get('body.0.expression')
 }
 
-
 test('assertValueType', t => {
     const nodePath = getNodePath(`assertValueType('string')`)
     const result = convertValidateCaller(nodePath)
-    t.true(result.type === 'value')
+    t.true(result.type === 'type')
     t.deepEqual(result.s, ['string'])
 })
 
 test('assertValueType', t => {
     const nodePath = getNodePath(`assertNodeType('LVal')`)
     const result = convertValidateCaller(nodePath)
-    t.true(result.type === 'node')
+    t.true(result.type === 'type')
     t.deepEqual(result.s, ['LVal'])
 })
 
@@ -33,3 +32,15 @@ test('assertOneOf', t => {
     t.true(result.s === 'BINARY_OPERATORS')
 })
 
+test('chain array ', t => {
+    const nodePath = getNodePath(
+        `chain(
+            assertValueType("array"),
+            assertEach(assertNodeOrValueType("null", "Expression", "SpreadElement"))
+        )`
+    )
+    const result = convertValidateCaller(nodePath)
+    t.true(result.type === 'type')
+    t.true(result.arrayType === 'array')
+    t.deepEqual(result.s, ['null', 'Expression', 'SpreadElement'])
+})

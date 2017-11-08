@@ -2,12 +2,8 @@ const {helper} = require('babel-helper')
 const assert = require('assert')
 
 class PropertyValidator {
-    static nodeType(s) {
-        return new PropertyValidator('node', s)
-    }
-
-    static valueType(s) {
-        return new PropertyValidator('value', s)
+    static fromType(s, arrayType = null) {
+        return new PropertyValidator('type', s, arrayType)
     }
 
     static constChars(s) {
@@ -18,38 +14,50 @@ class PropertyValidator {
         return new PropertyValidator('string', s)
     }
 
-    constructor(type, s) {
+    constructor(type, s, arrayType = null) {
         this.type = type
+        this.arrayType = arrayType
         this.s = s
     }
 }
 
-
-
-const convertValidateCaller = (nodePath) => {
+const convertValidateCaller = (nodePath, arrayType = null) => {
     switch (nodePath.node.callee.name) {
-        case 'assertValueType': {
-            const s = nodePath.node.arguments.map(node => {
-                assert(node.type === 'StringLiteral')
-                return node.value
-            })
-            return PropertyValidator.valueType(s)
-        }
+        case 'assertNodeOrValueType':
+        case 'assertValueType':
         case 'assertNodeType': {
             const s = nodePath.node.arguments.map(node => {
                 assert(node.type === 'StringLiteral')
                 return node.value
             })
-            return PropertyValidator.nodeType(s)
+            return PropertyValidator.fromType(s, arrayType)
         }
 
         case 'assertOneOf': {
             return PropertyValidator.constChars(nodePath.node.arguments[0].argument.name)
         }
 
+        case 'chain': {
+            assert(nodePath.node.arguments.length === 2)
+            assert(nodePath.node.arguments[0].type === 'CallExpression')
+            assert(nodePath.node.arguments[0].callee.name === 'assertValueType')
+            assert(nodePath.node.arguments[0].arguments.length === 1)
+            assert(nodePath.node.arguments[0].arguments[0].type === 'StringLiteral')
+
+            assert(nodePath.node.arguments[1].type === 'CallExpression')
+            assert(nodePath.node.arguments[1].callee.name === 'assertEach')
+            // console.log(nodePath.get('arguments.1').node)
+            // return
+            return convertValidateCaller(
+                nodePath.get('arguments.1.arguments.0'),
+                nodePath.node.arguments[0].arguments[0].value,
+            )
+        }
+
         default: {
             console.log(nodePath.node)
             assert(false)
+            return
         }
     }
 }
