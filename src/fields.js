@@ -29,20 +29,22 @@ class PropertyValidator {
 const convertValidateCaller = (nodePath) => {
     switch (nodePath.node.callee.name) {
         case 'assertValueType': {
-            return nodePath.node.arguments.map(node => {
+            const s = nodePath.node.arguments.map(node => {
                 assert(node.type === 'StringLiteral')
-                return PropertyValidator.valueType(node.value)
+                return node.value
             })
+            return PropertyValidator.valueType(s)
         }
         case 'assertNodeType': {
-            return nodePath.node.arguments.map(node => {
+            const s = nodePath.node.arguments.map(node => {
                 assert(node.type === 'StringLiteral')
-                return PropertyValidator.nodeType(node.value)
+                return node.value
             })
+            return PropertyValidator.nodeType(s)
         }
 
         case 'assertOneOf': {
-            return [PropertyValidator.constChars(nodePath.node.arguments[0].argument.name)]
+            return PropertyValidator.constChars(nodePath.node.arguments[0].argument.name)
         }
 
         default: {

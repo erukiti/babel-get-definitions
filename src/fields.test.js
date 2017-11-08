@@ -15,24 +15,21 @@ const getNodePath = (s) => {
 test('assertValueType', t => {
     const nodePath = getNodePath(`assertValueType('string')`)
     const result = convertValidateCaller(nodePath)
-    t.true(result.length === 1)
-    t.true(result[0].type === 'value')
-    t.true(result[0].s === 'string')
+    t.true(result.type === 'value')
+    t.deepEqual(result.s, ['string'])
 })
 
 test('assertValueType', t => {
     const nodePath = getNodePath(`assertNodeType('LVal')`)
     const result = convertValidateCaller(nodePath)
-    t.true(result.length === 1)
-    t.true(result[0].type === 'node')
-    t.true(result[0].s === 'LVal')
+    t.true(result.type === 'node')
+    t.deepEqual(result.s, ['LVal'])
 })
 
 test('assertOneOf', t => {
     const nodePath = getNodePath(`assertOneOf(...BINARY_OPERATORS)`)
     const result = convertValidateCaller(nodePath)
-    t.true(result.length === 1)
-    t.true(result[0].type === 'char')
-    t.true(result[0].s === 'BINARY_OPERATORS')
+    t.true(result.type === 'char')
+    t.true(result.s === 'BINARY_OPERATORS')
 })
 
