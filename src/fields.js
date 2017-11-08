@@ -10,8 +10,8 @@ class PropertyValidator {
         return new PropertyValidator('char', s)
     }
 
-    static constString(s) {
-        return new PropertyValidator('string', s)
+    static literal(s) {
+        return new PropertyValidator('literal', s)
     }
 
     constructor(type, s, arrayType = null) {
@@ -22,6 +22,7 @@ class PropertyValidator {
 }
 
 const convertValidateCaller = (nodePath, arrayType = null) => {
+    assert(nodePath.type === 'CallExpression')
     switch (nodePath.node.callee.name) {
         case 'assertNodeOrValueType':
         case 'assertValueType':
@@ -33,8 +34,19 @@ const convertValidateCaller = (nodePath, arrayType = null) => {
             return PropertyValidator.fromType(s, arrayType)
         }
 
-        case 'assertOneOf': {
-            return PropertyValidator.constChars(nodePath.node.arguments[0].argument.name)
+        case 'assertOneOf': { 
+            const args = nodePath.node.arguments
+            if (args[0].type === 'SpreadElement') {
+                assert(args.length === 1)
+                return PropertyValidator.constChars(nodePath.node.arguments[0].argument.name)
+            }
+
+            const s = args.map(node => {
+                // assert(t.isLiteral(node))
+                return node.value
+            })
+
+            return PropertyValidator.literal(s)
         }
 
         case 'chain': {
@@ -45,16 +57,24 @@ const convertValidateCaller = (nodePath, arrayType = null) => {
             assert(nodePath.node.arguments[0].arguments[0].type === 'StringLiteral')
 
             assert(nodePath.node.arguments[1].type === 'CallExpression')
-            assert(nodePath.node.arguments[1].callee.name === 'assertEach')
-            // console.log(nodePath.get('arguments.1').node)
-            // return
+            if (nodePath.node.arguments[1].callee.name === 'assertEach') {
+                return convertValidateCaller(
+                    nodePath.get('arguments.1.arguments.0'),
+                    nodePath.node.arguments[0].arguments[0].value,
+                )
+            }
             return convertValidateCaller(
-                nodePath.get('arguments.1.arguments.0'),
+                nodePath.get('arguments.1'),
                 nodePath.node.arguments[0].arguments[0].value,
             )
         }
 
+        case undefined: {
+            return
+        }
+
         default: {
+            console.log(nodePath.node.callee.name)
             console.log(nodePath.node)
             assert(false)
             return
@@ -83,13 +103,13 @@ const fields = (t, propPath, pushValidate) => {
                     // process.exit(1)
                 }
 
+                if (propPath3.node.key.name === 'object') {
+                    return
+                }
                 assert(propPath3.node.key.name === 'validate')
                 assert(propPath3.node.value.type === 'CallExpression')
 
-                const validates = convertValidateCaller(propPath3.get('value'))
-                validates.forEach(validate => {
-                    pushValidate(key2, validate)
-                })
+                pushValidate(key2, convertValidateCaller(propPath3.get('value')))
             })
         // const validatePath = propPath2.get('value.properties').find(vPath => vPath.node.key.name === 'validate')
 
