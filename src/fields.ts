@@ -2,6 +2,9 @@ const {helper} = require('./helper')
 const assert = require('assert')
 
 class PropertyValidator {
+    type
+    arrayType
+    s
     static fromType(s, arrayType = null) {
         return new PropertyValidator('type', s, arrayType)
     }
@@ -21,7 +24,7 @@ class PropertyValidator {
     }
 }
 
-const convertValidateCaller = (nodePath, arrayType = null) => {
+export const convertValidateCaller = (nodePath, arrayType = null) => {
     assert(nodePath.type === 'CallExpression')
     switch (nodePath.node.callee.name) {
         case 'assertNodeOrValueType':
@@ -82,7 +85,7 @@ const convertValidateCaller = (nodePath, arrayType = null) => {
     }
 }
 
-const fields = (t, propPath, pushValidate) => {
+export const fields = (t, propPath, pushValidate) => {
     if (propPath.node.value.type === 'Identifier') {
         return 
     }
@@ -120,5 +123,3 @@ const fields = (t, propPath, pushValidate) => {
             })
     })
 }
-
-module.exports = {fields, convertValidateCaller}

@@ -1,9 +1,9 @@
-const { transform } = require('babel-core');
-const { parse } = require('babylon');
-const { NodePath } = require('babel-traverse');
-const { helper } = require('./helper');
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const babel_core_1 = require("babel-core");
+const helper_1 = require("./helper");
 const assert = require('assert');
-const { fields } = require('./fields');
+const fields_1 = require("./fields");
 const getDefines = (src, where) => {
     const definedTypes = {};
     const plugin = babel => {
@@ -17,7 +17,7 @@ const getDefines = (src, where) => {
             return definedTypes[name].props[key];
         };
         const propBuild = (propPath, cb) => {
-            const keys = helper
+            const keys = helper_1.helper
                 .find(propPath, t, 'value.elements.*', ['ArrayExpression', null, 'StringLiteral'])
                 .nodePaths.map(p => p.node.value);
             cb(keys);
@@ -84,14 +84,16 @@ const getDefines = (src, where) => {
                 if (name === 'Identifier') {
                     return;
                 }
-                helper
+                helper_1.helper
                     .find(nodePath, t, 'arguments.1.properties.*', [null, 'ObjectExpression', null, 'ObjectProperty'])
                     .nodePaths.forEach(propPath => {
                     const key = propPath.node.key.name;
                     switch (key) {
                         case 'fields': {
-                            fields(t, propPath, (key2, validate) => {
-                                getProp(name, key2).validate.push(validate);
+                            fields_1.fields(t, propPath, (key2, validate) => {
+                                if (validate) {
+                                    getProp(name, key2).validate.push(validate);
+                                }
                             });
                             break;
                         }
@@ -126,7 +128,7 @@ const getDefines = (src, where) => {
     // const ast = parse(src)
     // const p = NodePath.get({parent: ast, container: ast, key: 'program'})
     // console.log(p.get('body.0.expression').node)
-    const { code } = transform(src, { plugins: [plugin] });
+    const { code } = babel_core_1.transform(src, { plugins: [plugin] });
     return Object.keys(definedTypes).map(key => definedTypes[key]);
 };
 module.exports = { getDefines };

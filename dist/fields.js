@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const { helper } = require('./helper');
 const assert = require('assert');
 class PropertyValidator {
@@ -16,7 +18,7 @@ class PropertyValidator {
         this.s = s;
     }
 }
-const convertValidateCaller = (nodePath, arrayType = null) => {
+exports.convertValidateCaller = (nodePath, arrayType = null) => {
     assert(nodePath.type === 'CallExpression');
     switch (nodePath.node.callee.name) {
         case 'assertNodeOrValueType':
@@ -48,12 +50,12 @@ const convertValidateCaller = (nodePath, arrayType = null) => {
             assert(nodePath.node.arguments[0].arguments[0].type === 'StringLiteral');
             assert(nodePath.node.arguments[1].type === 'CallExpression');
             if (nodePath.node.arguments[1].callee.name === 'assertEach') {
-                return convertValidateCaller(nodePath.get('arguments.1.arguments.0'), nodePath.node.arguments[0].arguments[0].value);
+                return exports.convertValidateCaller(nodePath.get('arguments.1.arguments.0'), nodePath.node.arguments[0].arguments[0].value);
             }
-            return convertValidateCaller(nodePath.get('arguments.1'), nodePath.node.arguments[0].arguments[0].value);
+            return exports.convertValidateCaller(nodePath.get('arguments.1'), nodePath.node.arguments[0].arguments[0].value);
         }
         case undefined: {
-            return 'unknown';
+            return;
         }
         default: {
             console.log(nodePath.node.callee.name);
@@ -63,7 +65,7 @@ const convertValidateCaller = (nodePath, arrayType = null) => {
         }
     }
 };
-const fields = (t, propPath, pushValidate) => {
+exports.fields = (t, propPath, pushValidate) => {
     if (propPath.node.value.type === 'Identifier') {
         return;
     }
@@ -95,9 +97,8 @@ const fields = (t, propPath, pushValidate) => {
             }
             assert(propPath3.node.key.name === 'validate');
             assert(propPath3.node.value.type === 'CallExpression');
-            pushValidate(key2, convertValidateCaller(propPath3.get('value')));
+            pushValidate(key2, exports.convertValidateCaller(propPath3.get('value')));
         });
     });
 };
-module.exports = { fields, convertValidateCaller };
 //# sourceMappingURL=fields.js.map

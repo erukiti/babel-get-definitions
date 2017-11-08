@@ -1,11 +1,11 @@
-const {transform} = require('babel-core')
-const {parse} = require('babylon')
-const {NodePath} = require('babel-traverse')
-const {helper} = require('./helper')
+import {transform} from 'babel-core'
+import {parse} from 'babylon'
+import {NodePath} from 'babel-traverse'
+import {helper} from './helper'
 
 const assert = require('assert')
 
-const {fields} = require('./fields')
+import {fields} from './fields'
 
 const getDefines = (src, where) => {
     const definedTypes = {}
