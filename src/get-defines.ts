@@ -7,7 +7,7 @@ const assert = require('assert')
 
 import {fields} from './fields'
 
-const getDefines = (src, where) => {
+export const getDefines = (src, where) => {
     const definedTypes = {}
 
     const plugin = babel => {
@@ -32,7 +32,10 @@ const getDefines = (src, where) => {
         const visitor = {
             Program: (nodePath, state) => {
                 nodePath.traverse({
-                    SpreadElement: (nodePath2) => {
+                    ImportDeclaration: (nodePath2) => {
+                        // console.log(nodePath2.node)
+                    },
+                    SpreadProperty: (nodePath2) => {
                         if (nodePath2.parent.type === 'CallExpression') {
                             return
                         }
@@ -107,10 +110,11 @@ const getDefines = (src, where) => {
                         const key = propPath.node.key.name
                         switch (key) {
                             case 'fields': {
-                                fields(t, propPath, (key2, validate) => {
-                                    if (validate) {
-                                        getProp(name, key2).validate.push(validate)
-                                    }
+                                const res = fields(t, propPath)
+                                Object.keys(res).forEach(key => {
+                                    getProp(name, key).validate = res[key].validate
+                                    getProp(name, key).optional = res[key].optional
+                                    getProp(name, key).default = res[key].default
                                 })
                                 break
                             }
@@ -119,7 +123,7 @@ const getDefines = (src, where) => {
                             case 'aliases':
                             case 'builder': {
                                 const cb = {
-                                    'builder': (keys) => keys.forEach(k => (getProp(name, k).isBuild = true)),
+                                    'builder': (keys) => definedTypes[name].builder = keys,
                                     'visitor': (keys) => keys.forEach(k => (getProp(name, k).isVisit = true)),
                                     'aliases': (keys) => definedTypes[name].aliases = keys
                                 }
@@ -142,18 +146,13 @@ const getDefines = (src, where) => {
         }
 
         return {
-            inherits: require('babel-plugin-syntax-object-rest-spread').default,
+            inherits: require('@babel/plugin-syntax-object-rest-spread').default,
             visitor,
         }
     }
-
-    // const ast = parse(src)
-    // const p = NodePath.get({parent: ast, container: ast, key: 'program'})
-    // console.log(p.get('body.0.expression').node)
 
     const {code} = transform(src, {plugins: [plugin]})
 
     return Object.keys(definedTypes).map(key => definedTypes[key])
 }
 
-module.exports = {getDefines}

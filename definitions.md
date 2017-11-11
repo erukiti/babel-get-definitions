@@ -1,2141 +1,864 @@
-## Expression
+## ArrayExpression
 
-### ArrayExpression (ECMAScript®2017)
+### aliases
 
-* elements (null \| Expression \| SpreadElement)
+Expression
 
-### AssignmentExpression (ECMAScript®2017)
+## AssignmentExpression
 
-* operator (string)
-* left (LVal)
-* right (Expression)
+### aliases
 
-### BinaryExpression (ECMAScript®2017)
+Expression
+### properties
 
-* operator (BINARY_OPERATORS)
-* left (Expression)
-* right (Expression)
+  * operator: string
+  * left: LVal
+  * right: Expression
 
-### CallExpression (ECMAScript®2017)
+### example
+```js
+t.assignmentExpression('string', t.identifier('lval'), t.identifier('expr'))
+```
 
-* callee (Expression)
-* arguments (Expression \| SpreadElement \| JSXNamespacedName)
-* typeParameters (TypeParameterInstantiation)
-* optional (true \| false)
+```json
+{
+  "type": "AssignmentExpression",
+  "operator": "string",
+  "left": {
+    "type": "Identifier",
+    "name": "lval"
+  },
+  "right": {
+    "type": "Identifier",
+    "name": "expr"
+  }
+}
+```
 
-### ConditionalExpression (ECMAScript®2017)
 
-* test (Expression)
-* consequent (Expression)
-* alternate (Expression)
+```js
+lval string expr
+```
 
-### FunctionExpression (ECMAScript®2017)
 
-* params (LVal)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* id (Identifier)
-* body (BlockStatement)
+## BinaryExpression
 
-### StringLiteral (ECMAScript®2017)
+### aliases
 
-* value (string)
+Binary, Expression
+### properties
 
-### NumericLiteral (ECMAScript®2017)
+  * operator: BINARY_OPERATORS
+  * left: Expression
+  * right: Expression
 
-* value (number)
+### example
+```js
+t.binaryExpression('+', t.identifier('expr'), t.identifier('expr'))
+```
 
-### NullLiteral (ECMAScript®2017)
+```json
+{
+  "type": "BinaryExpression",
+  "operator": "+",
+  "left": {
+    "type": "Identifier",
+    "name": "expr"
+  },
+  "right": {
+    "type": "Identifier",
+    "name": "expr"
+  }
+}
+```
 
 
-### BooleanLiteral (ECMAScript®2017)
+```js
+expr + expr
+```
 
-* value (boolean)
 
-### RegExpLiteral (ECMAScript®2017)
+## Directive
 
-* pattern (string)
-* flags (string)
 
-### LogicalExpression (ECMAScript®2017)
+## DirectiveLiteral
 
-* operator (LOGICAL_OPERATORS)
-* left (Expression)
-* right (Expression)
+### properties
 
-### MemberExpression (ECMAScript®2017)
+  * value: string
 
-* object (Expression)
-* property 
-* computed 
-* optional (true \| false)
+### example
+```js
+t.directiveLiteral('string')
+```
 
-### ObjectExpression (ECMAScript®2017)
+```json
+{
+  "type": "DirectiveLiteral",
+  "value": "string"
+}
+```
 
-* properties (ObjectMethod \| ObjectProperty \| SpreadElement)
 
-### SequenceExpression (ECMAScript®2017)
+```js
+"string"
+```
 
-* expressions (Expression)
 
-### ThisExpression (ECMAScript®2017)
+## BlockStatement
 
+### aliases
 
-### UnaryExpression (ECMAScript®2017)
+Scopable, BlockParent, Block, Statement
+### properties
 
-* operator (UNARY_OPERATORS)
-* argument (Expression)
-* prefix 
+  * body: Statement
+  * directives: Directive
 
-### UpdateExpression (ECMAScript®2017)
+### example
+```js
+t.blockStatement([t.returnStatement(t.identifier('statement'))], [])
+```
 
-* operator (UPDATE_OPERATORS)
-* argument (Expression)
-* prefix 
+```json
+{
+  "type": "BlockStatement",
+  "body": [
+    {
+      "type": "ReturnStatement",
+      "argument": {
+        "type": "Identifier",
+        "name": "statement"
+      }
+    }
+  ],
+  "directives": []
+}
+```
 
-### ArrowFunctionExpression (ECMAScript®2017)
 
-* params 
-* body (BlockStatement \| Expression)
-* async 
-* returnType 
-* typeParameters 
-* expression (boolean)
+```js
+{
+  return statement;
+}
+```
 
-### ClassExpression (ECMAScript®2017)
 
-* typeParameters (TypeParameterDeclaration \| Noop)
-* body (ClassBody)(ClassBody)
-* superClass (Expression)(Expression)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* id (Identifier)
-* decorators (Decorator)
+## BreakStatement
 
-### MetaProperty (ECMAScript®2017)
+### aliases
 
-* meta (Identifier)
-* property (Identifier)
+Statement, Terminatorless, CompletionStatement
 
-### Super (ECMAScript®2017)
+## CallExpression
 
+### aliases
 
-### TaggedTemplateExpression (ECMAScript®2017)
+Expression
+### properties
 
-* tag (Expression)
-* quasi (TemplateLiteral)
+  * callee: Expression
+  * arguments: Expression,SpreadElement,JSXNamespacedName
 
-### TemplateLiteral (ECMAScript®2017)
+### example
+```js
+t.callExpression(t.identifier('expr'), [t.identifier('expr')])
+```
 
-* quasis (TemplateElement)
-* expressions (Expression)
+```json
+{
+  "type": "CallExpression",
+  "callee": {
+    "type": "Identifier",
+    "name": "expr"
+  },
+  "arguments": [
+    {
+      "type": "Identifier",
+      "name": "expr"
+    }
+  ]
+}
+```
 
-### YieldExpression (ECMAScript®2017)
 
-* argument (Expression)
-* delegate (boolean)
+```js
+expr(expr)
+```
 
-### AwaitExpression (experimental)
 
-* argument (Expression)
+## CatchClause
 
-### BindExpression (experimental)
+### aliases
 
-* object 
-* callee 
+Scopable, BlockParent
 
-### Import (experimental)
+## ConditionalExpression
 
+### aliases
 
-### DoExpression (experimental)
+Expression, Conditional
 
-* body (BlockStatement)
+## ContinueStatement
 
-### TypeCastExpression (flow)
+### aliases
 
-* expression 
-* typeAnnotation 
+Statement, Terminatorless, CompletionStatement
 
-### JSXElement (jsx)
+## DebuggerStatement
 
-* openingElement (JSXOpeningElement)
-* closingElement (JSXClosingElement)
-* children (JSXText \| JSXExpressionContainer \| JSXSpreadChild \| JSXElement \| JSXFragment)
-* selfClosing 
+### aliases
 
-### JSXEmptyExpression (jsx)
+Statement
 
+## DoWhileStatement
 
-### JSXIdentifier (jsx)
+### aliases
 
-* name (string)
+Statement, BlockParent, Loop, While, Scopable
 
-### JSXMemberExpression (jsx)
+## EmptyStatement
 
-* object (JSXMemberExpression \| JSXIdentifier)
-* property (JSXIdentifier)
+### aliases
 
-### JSXFragment (jsx)
+Statement
 
-* openingFragment (JSXOpeningFragment)
-* closingFragment (JSXClosingFragment)
-* children (JSXText \| JSXExpressionContainer \| JSXSpreadChild \| JSXElement \| JSXFragment)
+## ExpressionStatement
 
-### TSAsExpression (typescript)
+### aliases
 
-* expression 
-* typeAnnotation 
+Statement, ExpressionWrapper
 
-### TSTypeAssertion (typescript)
+## File
 
-* typeAnnotation 
-* expression 
+### properties
 
-### TSNonNullExpression (typescript)
+  * program: Program
 
-* expression 
+### example
+```js
+t.file(t.program([]))
+```
 
-## Binary
+```json
+{
+  "type": "File",
+  "program": {
+    "type": "Program",
+    "body": [],
+    "directives": [],
+    "sourceType": "script"
+  },
+  "comments": null,
+  "tokens": null
+}
+```
 
-### BinaryExpression (ECMAScript®2017)
 
-* operator (BINARY_OPERATORS)
-* left (Expression)
-* right (Expression)
+```js
 
-### LogicalExpression (ECMAScript®2017)
+```
 
-* operator (LOGICAL_OPERATORS)
-* left (Expression)
-* right (Expression)
 
-## Scopable
+## ForInStatement
 
-### BlockStatement (ECMAScript®2017)
+### aliases
 
-* body (Statement)
-* directives (Directive)
+Scopable, Statement, For, BlockParent, Loop, ForXStatement
 
-### CatchClause (ECMAScript®2017)
+## ForStatement
 
-* param (Identifier)
-* body (BlockStatement)
+### aliases
 
-### DoWhileStatement (ECMAScript®2017)
+Scopable, Statement, For, BlockParent, Loop
 
-* test (Expression)
-* body (Statement)
+## FunctionDeclaration
 
-### ForInStatement (ECMAScript®2017)
+### aliases
 
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
+Scopable, Function, BlockParent, FunctionParent, Statement, Pureish, Declaration
+### properties
 
-### ForStatement (ECMAScript®2017)
+  * id: Identifier
+  * params: LVal
+  * body: BlockStatement
+  * generator: boolean
+  * async: boolean
 
-* init (VariableDeclaration \| Expression)
-* test (Expression)
-* update (Expression)
-* body (Statement)
+### example
+```js
+t.functionDeclaration(t.identifier('identifier'), [t.identifier('lval')], t.blockStatement([]), false, false)
+```
 
-### FunctionDeclaration (ECMAScript®2017)
+```json
+{
+  "type": "FunctionDeclaration",
+  "id": {
+    "type": "Identifier",
+    "name": "identifier"
+  },
+  "params": [
+    {
+      "type": "Identifier",
+      "name": "lval"
+    }
+  ],
+  "body": {
+    "type": "BlockStatement",
+    "body": [],
+    "directives": []
+  },
+  "generator": false,
+  "async": false
+}
+```
 
-* id (Identifier)
-* params (LVal)
-* body (BlockStatement)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* declare (boolean)
 
-### FunctionExpression (ECMAScript®2017)
+```js
+function identifier(lval) {}
+```
 
-* params (LVal)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* id (Identifier)
-* body (BlockStatement)
 
-### Program (ECMAScript®2017)
+## FunctionExpression
 
-* directives (Directive)
-* body (Statement)
-* sourceType (script \| module)
-* sourceFile (string)
+### aliases
 
-### ObjectMethod (ECMAScript®2017)
+Scopable, Function, BlockParent, FunctionParent, Expression, Pureish
 
-* kind (method \| get \| set)
-* key 
-* params (LVal)
-* body (BlockStatement)
-* computed (boolean)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* decorators (Decorator)
+## Identifier
 
-### SwitchStatement (ECMAScript®2017)
 
-* discriminant (Expression)
-* cases (SwitchCase)
+## IfStatement
 
-### WhileStatement (ECMAScript®2017)
+### aliases
 
-* test (Expression)
-* body (BlockStatement \| Statement)
+Statement, Conditional
 
-### ArrowFunctionExpression (ECMAScript®2017)
+## LabeledStatement
 
-* params 
-* body (BlockStatement \| Expression)
-* async 
-* returnType 
-* typeParameters 
-* expression (boolean)
+### aliases
 
-### ClassDeclaration (ECMAScript®2017)
+Statement
 
-* id (Identifier)
-* superClass (Expression)
-* body (ClassBody)
-* decorators (Decorator)
-* mixins 
-* typeParameters (TypeParameterDeclaration \| Noop)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* declare (boolean)
-* abstract (boolean)
+## StringLiteral
 
-### ClassExpression (ECMAScript®2017)
+### aliases
 
-* typeParameters (TypeParameterDeclaration \| Noop)
-* body (ClassBody)(ClassBody)
-* superClass (Expression)(Expression)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* id (Identifier)
-* decorators (Decorator)
+Expression, Pureish, Literal, Immutable
+### properties
 
-### ForOfStatement (ECMAScript®2017)
+  * value: string
 
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-* await (boolean)
+### example
+```js
+t.stringLiteral('string')
+```
 
-### ClassMethod (ECMAScript®2017)
+```json
+{
+  "type": "StringLiteral",
+  "value": "string"
+}
+```
 
-* kind (get \| set \| method \| constructor)
-* key 
-* params 
-* body (BlockStatement)
-* computed (boolean)
-* static (boolean)
-* decorators (Decorator)
-* returnType 
-* typeParameters 
-* abstract (boolean)
-* accessibility (public \| private \| protected)
-* optional (boolean)
-* access (public \| private \| protected)
 
-## BlockParent
+```js
+"string"
+```
 
-### BlockStatement (ECMAScript®2017)
 
-* body (Statement)
-* directives (Directive)
+## NumericLiteral
 
-### CatchClause (ECMAScript®2017)
+### aliases
 
-* param (Identifier)
-* body (BlockStatement)
+Expression, Pureish, Literal, Immutable
+### properties
 
-### DoWhileStatement (ECMAScript®2017)
+  * value: number
 
-* test (Expression)
-* body (Statement)
+### example
+```js
+t.numericLiteral(42)
+```
 
-### ForInStatement (ECMAScript®2017)
+```json
+{
+  "type": "NumericLiteral",
+  "value": 42
+}
+```
 
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
 
-### ForStatement (ECMAScript®2017)
+```js
+42
+```
 
-* init (VariableDeclaration \| Expression)
-* test (Expression)
-* update (Expression)
-* body (Statement)
 
-### FunctionDeclaration (ECMAScript®2017)
+## NullLiteral
 
-* id (Identifier)
-* params (LVal)
-* body (BlockStatement)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* declare (boolean)
+### aliases
 
-### FunctionExpression (ECMAScript®2017)
+Expression, Pureish, Literal, Immutable
 
-* params (LVal)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* id (Identifier)
-* body (BlockStatement)
+## BooleanLiteral
 
-### Program (ECMAScript®2017)
+### aliases
 
-* directives (Directive)
-* body (Statement)
-* sourceType (script \| module)
-* sourceFile (string)
+Expression, Pureish, Literal, Immutable
+### properties
 
-### ObjectMethod (ECMAScript®2017)
+  * value: boolean
 
-* kind (method \| get \| set)
-* key 
-* params (LVal)
-* body (BlockStatement)
-* computed (boolean)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* decorators (Decorator)
+### example
+```js
+t.booleanLiteral(true)
+```
 
-### SwitchStatement (ECMAScript®2017)
+```json
+{
+  "type": "BooleanLiteral",
+  "value": true
+}
+```
 
-* discriminant (Expression)
-* cases (SwitchCase)
 
-### WhileStatement (ECMAScript®2017)
+```js
+true
+```
 
-* test (Expression)
-* body (BlockStatement \| Statement)
 
-### ArrowFunctionExpression (ECMAScript®2017)
+## RegExpLiteral
 
-* params 
-* body (BlockStatement \| Expression)
-* async 
-* returnType 
-* typeParameters 
-* expression (boolean)
+### aliases
 
-### ForOfStatement (ECMAScript®2017)
+Expression, Literal
+### properties
 
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-* await (boolean)
+  * pattern: string
+  * flags: string
 
-### ClassMethod (ECMAScript®2017)
+### example
+```js
+t.regExpLiteral('string', "")
+```
 
-* kind (get \| set \| method \| constructor)
-* key 
-* params 
-* body (BlockStatement)
-* computed (boolean)
-* static (boolean)
-* decorators (Decorator)
-* returnType 
-* typeParameters 
-* abstract (boolean)
-* accessibility (public \| private \| protected)
-* optional (boolean)
-* access (public \| private \| protected)
+```json
+{
+  "type": "RegExpLiteral",
+  "pattern": "string",
+  "flags": ""
+}
+```
 
-## Block
 
-### BlockStatement (ECMAScript®2017)
+```js
+/string/
+```
 
-* body (Statement)
-* directives (Directive)
 
-### Program (ECMAScript®2017)
+## LogicalExpression
 
-* directives (Directive)
-* body (Statement)
-* sourceType (script \| module)
-* sourceFile (string)
+### aliases
 
-## Statement
+Binary, Expression
+### properties
 
-### BlockStatement (ECMAScript®2017)
+  * operator: LOGICAL_OPERATORS
+  * left: Expression
+  * right: Expression
 
-* body (Statement)
-* directives (Directive)
+### example
+```js
+t.logicalExpression('&&', t.identifier('expr'), t.identifier('expr'))
+```
 
-### BreakStatement (ECMAScript®2017)
+```json
+{
+  "type": "LogicalExpression",
+  "operator": "&&",
+  "left": {
+    "type": "Identifier",
+    "name": "expr"
+  },
+  "right": {
+    "type": "Identifier",
+    "name": "expr"
+  }
+}
+```
 
-* label (Identifier)
 
-### ContinueStatement (ECMAScript®2017)
+```js
+expr && expr
+```
 
-* label (Identifier)
 
-### DebuggerStatement (ECMAScript®2017)
+## MemberExpression
 
+### aliases
 
-### DoWhileStatement (ECMAScript®2017)
+Expression, LVal
+### properties
 
-* test (Expression)
-* body (Statement)
+  * object: Expression
+  * property: 
+  * computed: 
+  * optional: true,false
 
-### EmptyStatement (ECMAScript®2017)
+### example
+```js
+t.memberExpression(t.identifier('expr'), t.identifier('identifier'), false, true)
+```
 
+```json
+{
+  "type": "MemberExpression",
+  "object": {
+    "type": "Identifier",
+    "name": "expr"
+  },
+  "property": {
+    "type": "Identifier",
+    "name": "identifier"
+  },
+  "computed": false,
+  "optional": true
+}
+```
 
-### ExpressionStatement (ECMAScript®2017)
 
-* expression (Expression)
+```js
+expr?.identifier
+```
 
-### ForInStatement (ECMAScript®2017)
 
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
+## NewExpression
 
-### ForStatement (ECMAScript®2017)
 
-* init (VariableDeclaration \| Expression)
-* test (Expression)
-* update (Expression)
-* body (Statement)
+## Program
 
-### FunctionDeclaration (ECMAScript®2017)
+### aliases
 
-* id (Identifier)
-* params (LVal)
-* body (BlockStatement)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* declare (boolean)
+Scopable, BlockParent, Block
+### properties
 
-### IfStatement (ECMAScript®2017)
+  * body: Statement
+  * directives: Directive
+  * sourceType: script,module
 
-* test (Expression)
-* consequent (Statement)
-* alternate (Statement)
+### example
+```js
+t.program([t.returnStatement(t.identifier('statement'))], [], "script")
+```
 
-### LabeledStatement (ECMAScript®2017)
+```json
+{
+  "type": "Program",
+  "body": [
+    {
+      "type": "ReturnStatement",
+      "argument": {
+        "type": "Identifier",
+        "name": "statement"
+      }
+    }
+  ],
+  "directives": [],
+  "sourceType": "script"
+}
+```
 
-* label (Identifier)
-* body (Statement)
 
-### ReturnStatement (ECMAScript®2017)
+```js
+return statement;
+```
 
-* argument (Expression)
 
-### SwitchStatement (ECMAScript®2017)
+## ObjectExpression
 
-* discriminant (Expression)
-* cases (SwitchCase)
+### aliases
 
-### ThrowStatement (ECMAScript®2017)
+Expression
 
-* argument (Expression)
+## ObjectMethod
 
-### TryStatement (ECMAScript®2017)
+### aliases
 
-* block (BlockStatement)
-* handler (CatchClause)
-* finalizer (BlockStatement)
+UserWhitespacable, Function, Scopable, BlockParent, FunctionParent, Method, ObjectMember
+### properties
 
-### VariableDeclaration (ECMAScript®2017)
+  * kind: method,get,set
+  * key: 
+  * params: LVal
+  * body: BlockStatement
+  * computed: boolean
 
-* kind (var \| let \| const)
-* declarations (VariableDeclarator)
-* declare (boolean)
+### example
+```js
+t.objectMethod("method", t.identifier('identifier'), [t.identifier('lval')], t.blockStatement([]), false)
+```
 
-### WhileStatement (ECMAScript®2017)
+```json
+{
+  "type": "ObjectMethod",
+  "kind": "method",
+  "key": {
+    "type": "Identifier",
+    "name": "identifier"
+  },
+  "params": [
+    {
+      "type": "Identifier",
+      "name": "lval"
+    }
+  ],
+  "body": {
+    "type": "BlockStatement",
+    "body": [],
+    "directives": []
+  },
+  "computed": false
+}
+```
 
-* test (Expression)
-* body (BlockStatement \| Statement)
 
-### WithStatement (ECMAScript®2017)
+```js
+identifier(lval) {}
+```
 
-* object 
-* body (BlockStatement \| Statement)
 
-### ClassDeclaration (ECMAScript®2017)
+## ObjectProperty
 
-* id (Identifier)
-* superClass (Expression)
-* body (ClassBody)
-* decorators (Decorator)
-* mixins 
-* typeParameters (TypeParameterDeclaration \| Noop)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* declare (boolean)
-* abstract (boolean)
+### aliases
 
-### ExportAllDeclaration (ECMAScript®2017)
+UserWhitespacable, Property, ObjectMember
+### properties
 
-* source (StringLiteral)
+  * key: 
+  * value: Expression,PatternLike
+  * computed: boolean
+  * shorthand: boolean
+  * decorators: Decorator
 
-### ExportDefaultDeclaration (ECMAScript®2017)
+### example
+```js
+t.objectProperty(t.identifier('identifier'), t.identifier('expr'), false, false, )
+```
 
-* declaration (FunctionDeclaration \| TSDeclareFunction \| ClassDeclaration \| Expression)
+```json
+{
+  "type": "ObjectProperty",
+  "key": {
+    "type": "Identifier",
+    "name": "identifier"
+  },
+  "value": {
+    "type": "Identifier",
+    "name": "expr"
+  },
+  "computed": false,
+  "shorthand": false,
+  "decorators": null
+}
+```
 
-### ExportNamedDeclaration (ECMAScript®2017)
 
-* declaration (Declaration)
-* specifiers (ExportSpecifier \| ExportDefaultSpecifier \| ExportNamespaceSpecifier)
-* source (StringLiteral)
+```js
+identifier: expr
+```
 
-### ForOfStatement (ECMAScript®2017)
 
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-* await (boolean)
+## RestElement
 
-### ImportDeclaration (ECMAScript®2017)
+### aliases
 
-* specifiers (ImportSpecifier \| ImportDefaultSpecifier \| ImportNamespaceSpecifier)
-* source (StringLiteral)
+LVal, PatternLike
+### properties
 
-### DeclareClass (flow)
+  * argument: LVal
 
-* id 
-* typeParameters 
-* extends 
-* body 
+### example
+```js
+t.restElement(t.identifier('lval'))
+```
 
-### DeclareFunction (flow)
+```json
+{
+  "type": "RestElement",
+  "argument": {
+    "type": "Identifier",
+    "name": "lval"
+  }
+}
+```
 
-* id 
 
-### DeclareInterface (flow)
+```js
+...lval
+```
 
-* id 
-* typeParameters 
-* extends 
-* body 
 
-### DeclareModule (flow)
+## ReturnStatement
 
-* id 
-* body 
+### aliases
 
-### DeclareModuleExports (flow)
+Statement, Terminatorless, CompletionStatement
 
-* typeAnnotation 
+## SequenceExpression
 
-### DeclareTypeAlias (flow)
+### aliases
 
-* id 
-* typeParameters 
-* right 
+Expression
 
-### DeclareOpaqueType (flow)
+## SwitchCase
 
-* id 
-* typeParameters 
-* supertype 
 
-### DeclareVariable (flow)
+## SwitchStatement
 
-* id 
+### aliases
 
-### DeclareExportDeclaration (flow)
+Statement, BlockParent, Scopable
 
-* declaration 
-* specifiers 
-* source 
+## ThisExpression
 
-### DeclareExportAllDeclaration (flow)
+### aliases
 
-* source 
+Expression
 
-### InterfaceDeclaration (flow)
+## ThrowStatement
 
-* id 
-* typeParameters 
-* extends 
-* body 
+### aliases
 
-### OpaqueType (flow)
+Statement, Terminatorless, CompletionStatement
 
-* id 
-* typeParameters 
-* supertype 
-* impltype 
+## TryStatement
 
-### TypeAlias (flow)
+### aliases
 
-* id 
-* typeParameters 
-* right 
+Statement
 
-### TSDeclareFunction (typescript)
+## UnaryExpression
 
-* id 
-* typeParameters 
-* params 
-* returnType 
+### aliases
 
-### TSInterfaceDeclaration (typescript)
+UnaryLike, Expression
+### properties
 
-* id 
-* typeParameters 
-* extends 
-* body 
+  * operator: UNARY_OPERATORS
+  * argument: Expression
+  * prefix: 
 
-### TSTypeAliasDeclaration (typescript)
+### example
+```js
+t.unaryExpression('!', t.identifier('expr'), true)
+```
 
-* id 
-* typeParameters 
-* typeAnnotation 
+```json
+{
+  "type": "UnaryExpression",
+  "operator": "!",
+  "argument": {
+    "type": "Identifier",
+    "name": "expr"
+  },
+  "prefix": true
+}
+```
 
-### TSEnumDeclaration (typescript)
 
-* id 
-* members 
+```js
+!expr
+```
 
-### TSModuleDeclaration (typescript)
 
-* id 
-* body 
+## UpdateExpression
 
-### TSImportEqualsDeclaration (typescript)
+### aliases
 
-* id 
-* moduleReference 
+Expression
+### properties
 
-### TSExportAssignment (typescript)
+  * operator: UPDATE_OPERATORS
+  * argument: Expression
+  * prefix: 
 
-* expression 
+### example
+```js
+t.updateExpression('++', t.identifier('expr'), false)
+```
 
-### TSNamespaceExportDeclaration (typescript)
+```json
+{
+  "type": "UpdateExpression",
+  "operator": "++",
+  "argument": {
+    "type": "Identifier",
+    "name": "expr"
+  },
+  "prefix": false
+}
+```
 
-* id 
 
-## Terminatorless
+```js
+expr++
+```
 
-### BreakStatement (ECMAScript®2017)
 
-* label (Identifier)
+## VariableDeclaration
 
-### ContinueStatement (ECMAScript®2017)
+### aliases
 
-* label (Identifier)
+Statement, Declaration
+### properties
 
-### ReturnStatement (ECMAScript®2017)
+  * kind: var,let,const
+  * declarations: VariableDeclarator
 
-* argument (Expression)
+### example
+```js
+t.variableDeclaration('var', [t.variableDeclarator(t.identifier('hoge'), t.numericLiteral(1))])
+```
 
-### ThrowStatement (ECMAScript®2017)
+```json
+{
+  "type": "VariableDeclaration",
+  "kind": "var",
+  "declarations": [
+    {
+      "type": "VariableDeclarator",
+      "id": {
+        "type": "Identifier",
+        "name": "hoge"
+      },
+      "init": {
+        "type": "NumericLiteral",
+        "value": 1
+      }
+    }
+  ]
+}
+```
 
-* argument (Expression)
 
-### YieldExpression (ECMAScript®2017)
+```js
+var hoge = 1;
+```
 
-* argument (Expression)
-* delegate (boolean)
 
-### AwaitExpression (experimental)
+## VariableDeclarator
 
-* argument (Expression)
 
-## CompletionStatement
+## WhileStatement
 
-### BreakStatement (ECMAScript®2017)
+### aliases
 
-* label (Identifier)
+Statement, BlockParent, Loop, While, Scopable
 
-### ContinueStatement (ECMAScript®2017)
+## WithStatement
 
-* label (Identifier)
+### aliases
 
-### ReturnStatement (ECMAScript®2017)
-
-* argument (Expression)
-
-### ThrowStatement (ECMAScript®2017)
-
-* argument (Expression)
-
-## Conditional
-
-### ConditionalExpression (ECMAScript®2017)
-
-* test (Expression)
-* consequent (Expression)
-* alternate (Expression)
-
-### IfStatement (ECMAScript®2017)
-
-* test (Expression)
-* consequent (Statement)
-* alternate (Statement)
-
-## Loop
-
-### DoWhileStatement (ECMAScript®2017)
-
-* test (Expression)
-* body (Statement)
-
-### ForInStatement (ECMAScript®2017)
-
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-
-### ForStatement (ECMAScript®2017)
-
-* init (VariableDeclaration \| Expression)
-* test (Expression)
-* update (Expression)
-* body (Statement)
-
-### WhileStatement (ECMAScript®2017)
-
-* test (Expression)
-* body (BlockStatement \| Statement)
-
-### ForOfStatement (ECMAScript®2017)
-
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-* await (boolean)
-
-## While
-
-### DoWhileStatement (ECMAScript®2017)
-
-* test (Expression)
-* body (Statement)
-
-### WhileStatement (ECMAScript®2017)
-
-* test (Expression)
-* body (BlockStatement \| Statement)
-
-## ExpressionWrapper
-
-### ExpressionStatement (ECMAScript®2017)
-
-* expression (Expression)
-
-### TypeCastExpression (flow)
-
-* expression 
-* typeAnnotation 
-
-## For
-
-### ForInStatement (ECMAScript®2017)
-
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-
-### ForStatement (ECMAScript®2017)
-
-* init (VariableDeclaration \| Expression)
-* test (Expression)
-* update (Expression)
-* body (Statement)
-
-### ForOfStatement (ECMAScript®2017)
-
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-* await (boolean)
-
-## ForXStatement
-
-### ForInStatement (ECMAScript®2017)
-
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-
-### ForOfStatement (ECMAScript®2017)
-
-* left (VariableDeclaration \| LVal)
-* right (Expression)
-* body (Statement)
-* await (boolean)
-
-## Function
-
-### FunctionDeclaration (ECMAScript®2017)
-
-* id (Identifier)
-* params (LVal)
-* body (BlockStatement)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* declare (boolean)
-
-### FunctionExpression (ECMAScript®2017)
-
-* params (LVal)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* id (Identifier)
-* body (BlockStatement)
-
-### ObjectMethod (ECMAScript®2017)
-
-* kind (method \| get \| set)
-* key 
-* params (LVal)
-* body (BlockStatement)
-* computed (boolean)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* decorators (Decorator)
-
-### ArrowFunctionExpression (ECMAScript®2017)
-
-* params 
-* body (BlockStatement \| Expression)
-* async 
-* returnType 
-* typeParameters 
-* expression (boolean)
-
-### ClassMethod (ECMAScript®2017)
-
-* kind (get \| set \| method \| constructor)
-* key 
-* params 
-* body (BlockStatement)
-* computed (boolean)
-* static (boolean)
-* decorators (Decorator)
-* returnType 
-* typeParameters 
-* abstract (boolean)
-* accessibility (public \| private \| protected)
-* optional (boolean)
-* access (public \| private \| protected)
-
-## FunctionParent
-
-### FunctionDeclaration (ECMAScript®2017)
-
-* id (Identifier)
-* params (LVal)
-* body (BlockStatement)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* declare (boolean)
-
-### FunctionExpression (ECMAScript®2017)
-
-* params (LVal)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* id (Identifier)
-* body (BlockStatement)
-
-### ObjectMethod (ECMAScript®2017)
-
-* kind (method \| get \| set)
-* key 
-* params (LVal)
-* body (BlockStatement)
-* computed (boolean)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* decorators (Decorator)
-
-### ArrowFunctionExpression (ECMAScript®2017)
-
-* params 
-* body (BlockStatement \| Expression)
-* async 
-* returnType 
-* typeParameters 
-* expression (boolean)
-
-### ClassMethod (ECMAScript®2017)
-
-* kind (get \| set \| method \| constructor)
-* key 
-* params 
-* body (BlockStatement)
-* computed (boolean)
-* static (boolean)
-* decorators (Decorator)
-* returnType 
-* typeParameters 
-* abstract (boolean)
-* accessibility (public \| private \| protected)
-* optional (boolean)
-* access (public \| private \| protected)
-
-## Pureish
-
-### FunctionDeclaration (ECMAScript®2017)
-
-* id (Identifier)
-* params (LVal)
-* body (BlockStatement)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* declare (boolean)
-
-### FunctionExpression (ECMAScript®2017)
-
-* params (LVal)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* id (Identifier)
-* body (BlockStatement)
-
-### StringLiteral (ECMAScript®2017)
-
-* value (string)
-
-### NumericLiteral (ECMAScript®2017)
-
-* value (number)
-
-### NullLiteral (ECMAScript®2017)
-
-
-### BooleanLiteral (ECMAScript®2017)
-
-* value (boolean)
-
-### ArrowFunctionExpression (ECMAScript®2017)
-
-* params 
-* body (BlockStatement \| Expression)
-* async 
-* returnType 
-* typeParameters 
-* expression (boolean)
-
-### ClassDeclaration (ECMAScript®2017)
-
-* id (Identifier)
-* superClass (Expression)
-* body (ClassBody)
-* decorators (Decorator)
-* mixins 
-* typeParameters (TypeParameterDeclaration \| Noop)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* declare (boolean)
-* abstract (boolean)
-
-### ClassExpression (ECMAScript®2017)
-
-* typeParameters (TypeParameterDeclaration \| Noop)
-* body (ClassBody)(ClassBody)
-* superClass (Expression)(Expression)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* id (Identifier)
-* decorators (Decorator)
-
-## Declaration
-
-### FunctionDeclaration (ECMAScript®2017)
-
-* id (Identifier)
-* params (LVal)
-* body (BlockStatement)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* declare (boolean)
-
-### VariableDeclaration (ECMAScript®2017)
-
-* kind (var \| let \| const)
-* declarations (VariableDeclarator)
-* declare (boolean)
-
-### ClassDeclaration (ECMAScript®2017)
-
-* id (Identifier)
-* superClass (Expression)
-* body (ClassBody)
-* decorators (Decorator)
-* mixins 
-* typeParameters (TypeParameterDeclaration \| Noop)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* declare (boolean)
-* abstract (boolean)
-
-### ExportAllDeclaration (ECMAScript®2017)
-
-* source (StringLiteral)
-
-### ExportDefaultDeclaration (ECMAScript®2017)
-
-* declaration (FunctionDeclaration \| TSDeclareFunction \| ClassDeclaration \| Expression)
-
-### ExportNamedDeclaration (ECMAScript®2017)
-
-* declaration (Declaration)
-* specifiers (ExportSpecifier \| ExportDefaultSpecifier \| ExportNamespaceSpecifier)
-* source (StringLiteral)
-
-### ImportDeclaration (ECMAScript®2017)
-
-* specifiers (ImportSpecifier \| ImportDefaultSpecifier \| ImportNamespaceSpecifier)
-* source (StringLiteral)
-
-### DeclareClass (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### DeclareFunction (flow)
-
-* id 
-
-### DeclareInterface (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### DeclareModule (flow)
-
-* id 
-* body 
-
-### DeclareModuleExports (flow)
-
-* typeAnnotation 
-
-### DeclareTypeAlias (flow)
-
-* id 
-* typeParameters 
-* right 
-
-### DeclareOpaqueType (flow)
-
-* id 
-* typeParameters 
-* supertype 
-
-### DeclareVariable (flow)
-
-* id 
-
-### DeclareExportDeclaration (flow)
-
-* declaration 
-* specifiers 
-* source 
-
-### DeclareExportAllDeclaration (flow)
-
-* source 
-
-### InterfaceDeclaration (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### OpaqueType (flow)
-
-* id 
-* typeParameters 
-* supertype 
-* impltype 
-
-### TypeAlias (flow)
-
-* id 
-* typeParameters 
-* right 
-
-### TSDeclareFunction (typescript)
-
-* id 
-* typeParameters 
-* params 
-* returnType 
-
-### TSInterfaceDeclaration (typescript)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### TSTypeAliasDeclaration (typescript)
-
-* id 
-* typeParameters 
-* typeAnnotation 
-
-### TSEnumDeclaration (typescript)
-
-* id 
-* members 
-
-### TSModuleDeclaration (typescript)
-
-* id 
-* body 
-
-## Literal
-
-### StringLiteral (ECMAScript®2017)
-
-* value (string)
-
-### NumericLiteral (ECMAScript®2017)
-
-* value (number)
-
-### NullLiteral (ECMAScript®2017)
-
-
-### BooleanLiteral (ECMAScript®2017)
-
-* value (boolean)
-
-### RegExpLiteral (ECMAScript®2017)
-
-* pattern (string)
-* flags (string)
-
-### TemplateLiteral (ECMAScript®2017)
-
-* quasis (TemplateElement)
-* expressions (Expression)
-
-## Immutable
-
-### StringLiteral (ECMAScript®2017)
-
-* value (string)
-
-### NumericLiteral (ECMAScript®2017)
-
-* value (number)
-
-### NullLiteral (ECMAScript®2017)
-
-
-### BooleanLiteral (ECMAScript®2017)
-
-* value (boolean)
-
-### JSXAttribute (jsx)
-
-* name (JSXIdentifier \| JSXNamespacedName)
-* value (JSXElement \| JSXFragment \| StringLiteral \| JSXExpressionContainer)
-
-### JSXClosingElement (jsx)
-
-* name (JSXIdentifier \| JSXMemberExpression)
-
-### JSXElement (jsx)
-
-* openingElement (JSXOpeningElement)
-* closingElement (JSXClosingElement)
-* children (JSXText \| JSXExpressionContainer \| JSXSpreadChild \| JSXElement \| JSXFragment)
-* selfClosing 
-
-### JSXExpressionContainer (jsx)
-
-* expression (Expression)
-
-### JSXSpreadChild (jsx)
-
-* expression (Expression)
-
-### JSXOpeningElement (jsx)
-
-* name (JSXIdentifier \| JSXMemberExpression)
-* attributes (JSXAttribute \| JSXSpreadAttribute)
-* selfClosing (boolean)
-
-### JSXText (jsx)
-
-* value (string)
-
-### JSXFragment (jsx)
-
-* openingFragment (JSXOpeningFragment)
-* closingFragment (JSXClosingFragment)
-* children (JSXText \| JSXExpressionContainer \| JSXSpreadChild \| JSXElement \| JSXFragment)
-
-### JSXOpeningFragment (jsx)
-
-
-### JSXClosingFragment (jsx)
-
-
-## LVal
-
-### MemberExpression (ECMAScript®2017)
-
-* object (Expression)
-* property 
-* computed 
-* optional (true \| false)
-
-### RestElement (ECMAScript®2017)
-
-* argument (LVal)
-* typeAnnotation (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* decorators (Decorator)
-
-### AssignmentPattern (ECMAScript®2017)
-
-* left (Identifier \| ObjectPattern \| ArrayPattern)
-* right (Expression)
-* decorators (Decorator)
-
-### ArrayPattern (ECMAScript®2017)
-
-* elements (PatternLike)
-* typeAnnotation 
-* decorators (Decorator)
-
-### ObjectPattern (ECMAScript®2017)
-
-* properties (RestElement \| ObjectProperty)
-* typeAnnotation 
-
-### TSParameterProperty (typescript)
-
-* parameter (Identifier \| AssignmentPattern)
-* accessibility (public \| private \| protected)
-* readonly (boolean)
-
-## UserWhitespacable
-
-### ObjectMethod (ECMAScript®2017)
-
-* kind (method \| get \| set)
-* key 
-* params (LVal)
-* body (BlockStatement)
-* computed (boolean)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* decorators (Decorator)
-
-### ObjectProperty (ECMAScript®2017)
-
-* key 
-* value (Expression \| PatternLike)
-* computed (boolean)
-* shorthand (boolean)
-* decorators (Decorator)
-
-### ObjectTypeCallProperty (flow)
-
-* value 
-
-### ObjectTypeIndexer (flow)
-
-* id 
-* key 
-* value 
-
-### ObjectTypeProperty (flow)
-
-* key 
-* value 
-
-### ObjectTypeSpreadProperty (flow)
-
-* argument 
-
-## Method
-
-### ObjectMethod (ECMAScript®2017)
-
-* kind (method \| get \| set)
-* key 
-* params (LVal)
-* body (BlockStatement)
-* computed (boolean)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* decorators (Decorator)
-
-### ClassMethod (ECMAScript®2017)
-
-* kind (get \| set \| method \| constructor)
-* key 
-* params 
-* body (BlockStatement)
-* computed (boolean)
-* static (boolean)
-* decorators (Decorator)
-* returnType 
-* typeParameters 
-* abstract (boolean)
-* accessibility (public \| private \| protected)
-* optional (boolean)
-* access (public \| private \| protected)
-
-## ObjectMember
-
-### ObjectMethod (ECMAScript®2017)
-
-* kind (method \| get \| set)
-* key 
-* params (LVal)
-* body (BlockStatement)
-* computed (boolean)
-* generator (boolean)
-* async (boolean)
-* returnType (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* typeParameters (TypeParameterDeclaration \| Noop)
-* decorators (Decorator)
-
-### ObjectProperty (ECMAScript®2017)
-
-* key 
-* value (Expression \| PatternLike)
-* computed (boolean)
-* shorthand (boolean)
-* decorators (Decorator)
-
-## Property
-
-### ObjectProperty (ECMAScript®2017)
-
-* key 
-* value (Expression \| PatternLike)
-* computed (boolean)
-* shorthand (boolean)
-* decorators (Decorator)
-
-### ClassProperty (experimental)
-
-* key 
-* value (Expression)
-* typeAnnotation (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* decorators (Decorator)
-* computed 
-* readonly (boolean)
-
-## PatternLike
-
-### RestElement (ECMAScript®2017)
-
-* argument (LVal)
-* typeAnnotation (TypeAnnotation \| TSTypeAnnotation \| Noop)
-* decorators (Decorator)
-
-### AssignmentPattern (ECMAScript®2017)
-
-* left (Identifier \| ObjectPattern \| ArrayPattern)
-* right (Expression)
-* decorators (Decorator)
-
-### ArrayPattern (ECMAScript®2017)
-
-* elements (PatternLike)
-* typeAnnotation 
-* decorators (Decorator)
-
-### ObjectPattern (ECMAScript®2017)
-
-* properties (RestElement \| ObjectProperty)
-* typeAnnotation 
-
-## UnaryLike
-
-### UnaryExpression (ECMAScript®2017)
-
-* operator (UNARY_OPERATORS)
-* argument (Expression)
-* prefix 
-
-### SpreadElement (ECMAScript®2017)
-
-* argument (Expression)
-
-## Pattern
-
-### AssignmentPattern (ECMAScript®2017)
-
-* left (Identifier \| ObjectPattern \| ArrayPattern)
-* right (Expression)
-* decorators (Decorator)
-
-### ArrayPattern (ECMAScript®2017)
-
-* elements (PatternLike)
-* typeAnnotation 
-* decorators (Decorator)
-
-### ObjectPattern (ECMAScript®2017)
-
-* properties (RestElement \| ObjectProperty)
-* typeAnnotation 
-
-## Class
-
-### ClassDeclaration (ECMAScript®2017)
-
-* id (Identifier)
-* superClass (Expression)
-* body (ClassBody)
-* decorators (Decorator)
-* mixins 
-* typeParameters (TypeParameterDeclaration \| Noop)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* declare (boolean)
-* abstract (boolean)
-
-### ClassExpression (ECMAScript®2017)
-
-* typeParameters (TypeParameterDeclaration \| Noop)
-* body (ClassBody)(ClassBody)
-* superClass (Expression)(Expression)
-* superTypeParameters (TypeParameterInstantiation)
-* implements (TSExpressionWithTypeArguments \| FlowClassImplements)
-* id (Identifier)
-* decorators (Decorator)
-
-## ModuleDeclaration
-
-### ExportAllDeclaration (ECMAScript®2017)
-
-* source (StringLiteral)
-
-### ExportDefaultDeclaration (ECMAScript®2017)
-
-* declaration (FunctionDeclaration \| TSDeclareFunction \| ClassDeclaration \| Expression)
-
-### ExportNamedDeclaration (ECMAScript®2017)
-
-* declaration (Declaration)
-* specifiers (ExportSpecifier \| ExportDefaultSpecifier \| ExportNamespaceSpecifier)
-* source (StringLiteral)
-
-### ImportDeclaration (ECMAScript®2017)
-
-* specifiers (ImportSpecifier \| ImportDefaultSpecifier \| ImportNamespaceSpecifier)
-* source (StringLiteral)
-
-## ExportDeclaration
-
-### ExportAllDeclaration (ECMAScript®2017)
-
-* source (StringLiteral)
-
-### ExportDefaultDeclaration (ECMAScript®2017)
-
-* declaration (FunctionDeclaration \| TSDeclareFunction \| ClassDeclaration \| Expression)
-
-### ExportNamedDeclaration (ECMAScript®2017)
-
-* declaration (Declaration)
-* specifiers (ExportSpecifier \| ExportDefaultSpecifier \| ExportNamespaceSpecifier)
-* source (StringLiteral)
-
-## ModuleSpecifier
-
-### ExportSpecifier (ECMAScript®2017)
-
-* local (Identifier)
-* exported (Identifier)
-
-### ImportDefaultSpecifier (ECMAScript®2017)
-
-* local (Identifier)
-
-### ImportNamespaceSpecifier (ECMAScript®2017)
-
-* local (Identifier)
-
-### ImportSpecifier (ECMAScript®2017)
-
-* local (Identifier)
-* imported (Identifier)
-* importKind ( \| type \| typeof)
-
-### ExportDefaultSpecifier (experimental)
-
-* exported (Identifier)
-
-### ExportNamespaceSpecifier (experimental)
-
-* exported (Identifier)
-
-## Flow
-
-### AnyTypeAnnotation (flow)
-
-
-### ArrayTypeAnnotation (flow)
-
-* elementType 
-
-### BooleanTypeAnnotation (flow)
-
-
-### BooleanLiteralTypeAnnotation (flow)
-
-
-### NullLiteralTypeAnnotation (flow)
-
-
-### ClassImplements (flow)
-
-* id 
-* typeParameters 
-
-### DeclareClass (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### DeclareFunction (flow)
-
-* id 
-
-### DeclareInterface (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### DeclareModule (flow)
-
-* id 
-* body 
-
-### DeclareModuleExports (flow)
-
-* typeAnnotation 
-
-### DeclareTypeAlias (flow)
-
-* id 
-* typeParameters 
-* right 
-
-### DeclareOpaqueType (flow)
-
-* id 
-* typeParameters 
-* supertype 
-
-### DeclareVariable (flow)
-
-* id 
-
-### DeclareExportDeclaration (flow)
-
-* declaration 
-* specifiers 
-* source 
-
-### DeclareExportAllDeclaration (flow)
-
-* source 
-
-### DeclaredPredicate (flow)
-
-* value 
-
-### ExistsTypeAnnotation (flow)
-
-
-### FunctionTypeAnnotation (flow)
-
-* typeParameters 
-* params 
-* rest 
-* returnType 
-
-### FunctionTypeParam (flow)
-
-* name 
-* typeAnnotation 
-
-### GenericTypeAnnotation (flow)
-
-* id 
-* typeParameters 
-
-### InferredPredicate (flow)
-
-
-### InterfaceExtends (flow)
-
-* id 
-* typeParameters 
-
-### InterfaceDeclaration (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### IntersectionTypeAnnotation (flow)
-
-* types 
-
-### MixedTypeAnnotation (flow)
-
-
-### EmptyTypeAnnotation (flow)
-
-
-### NullableTypeAnnotation (flow)
-
-* typeAnnotation 
-
-### NumberLiteralTypeAnnotation (flow)
-
-
-### NumberTypeAnnotation (flow)
-
-
-### ObjectTypeAnnotation (flow)
-
-* properties 
-* indexers 
-* callProperties 
-
-### ObjectTypeCallProperty (flow)
-
-* value 
-
-### ObjectTypeIndexer (flow)
-
-* id 
-* key 
-* value 
-
-### ObjectTypeProperty (flow)
-
-* key 
-* value 
-
-### ObjectTypeSpreadProperty (flow)
-
-* argument 
-
-### OpaqueType (flow)
-
-* id 
-* typeParameters 
-* supertype 
-* impltype 
-
-### QualifiedTypeIdentifier (flow)
-
-* id 
-* qualification 
-
-### StringLiteralTypeAnnotation (flow)
-
-
-### StringTypeAnnotation (flow)
-
-
-### ThisTypeAnnotation (flow)
-
-
-### TupleTypeAnnotation (flow)
-
-* types 
-
-### TypeofTypeAnnotation (flow)
-
-* argument 
-
-### TypeAlias (flow)
-
-* id 
-* typeParameters 
-* right 
-
-### TypeAnnotation (flow)
-
-* typeAnnotation (Flow)
-
-### TypeCastExpression (flow)
-
-* expression 
-* typeAnnotation 
-
-### TypeParameter (flow)
-
-* bound (TypeAnnotation)
-* default (Flow)
-* name (string)
-
-### TypeParameterDeclaration (flow)
-
-* params (TypeParameter)
-
-### TypeParameterInstantiation (flow)
-
-* params (Flow)
-
-### UnionTypeAnnotation (flow)
-
-* types 
-
-### VoidTypeAnnotation (flow)
-
-
-## FlowBaseAnnotation
-
-### AnyTypeAnnotation (flow)
-
-
-### BooleanTypeAnnotation (flow)
-
-
-### NullLiteralTypeAnnotation (flow)
-
-
-### MixedTypeAnnotation (flow)
-
-
-### EmptyTypeAnnotation (flow)
-
-
-### NumberTypeAnnotation (flow)
-
-
-### StringTypeAnnotation (flow)
-
-
-### ThisTypeAnnotation (flow)
-
-
-### VoidTypeAnnotation (flow)
-
-
-## FlowDeclaration
-
-### DeclareClass (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### DeclareFunction (flow)
-
-* id 
-
-### DeclareInterface (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### DeclareModule (flow)
-
-* id 
-* body 
-
-### DeclareModuleExports (flow)
-
-* typeAnnotation 
-
-### DeclareTypeAlias (flow)
-
-* id 
-* typeParameters 
-* right 
-
-### DeclareOpaqueType (flow)
-
-* id 
-* typeParameters 
-* supertype 
-
-### DeclareVariable (flow)
-
-* id 
-
-### DeclareExportDeclaration (flow)
-
-* declaration 
-* specifiers 
-* source 
-
-### DeclareExportAllDeclaration (flow)
-
-* source 
-
-### InterfaceDeclaration (flow)
-
-* id 
-* typeParameters 
-* extends 
-* body 
-
-### OpaqueType (flow)
-
-* id 
-* typeParameters 
-* supertype 
-* impltype 
-
-### TypeAlias (flow)
-
-* id 
-* typeParameters 
-* right 
-
-## FlowPredicate
-
-### DeclaredPredicate (flow)
-
-* value 
-
-### InferredPredicate (flow)
-
-
-## JSX
-
-### JSXAttribute (jsx)
-
-* name (JSXIdentifier \| JSXNamespacedName)
-* value (JSXElement \| JSXFragment \| StringLiteral \| JSXExpressionContainer)
-
-### JSXClosingElement (jsx)
-
-* name (JSXIdentifier \| JSXMemberExpression)
-
-### JSXElement (jsx)
-
-* openingElement (JSXOpeningElement)
-* closingElement (JSXClosingElement)
-* children (JSXText \| JSXExpressionContainer \| JSXSpreadChild \| JSXElement \| JSXFragment)
-* selfClosing 
-
-### JSXEmptyExpression (jsx)
-
-
-### JSXExpressionContainer (jsx)
-
-* expression (Expression)
-
-### JSXSpreadChild (jsx)
-
-* expression (Expression)
-
-### JSXIdentifier (jsx)
-
-* name (string)
-
-### JSXMemberExpression (jsx)
-
-* object (JSXMemberExpression \| JSXIdentifier)
-* property (JSXIdentifier)
-
-### JSXNamespacedName (jsx)
-
-* namespace (JSXIdentifier)
-* name (JSXIdentifier)
-
-### JSXOpeningElement (jsx)
-
-* name (JSXIdentifier \| JSXMemberExpression)
-* attributes (JSXAttribute \| JSXSpreadAttribute)
-* selfClosing (boolean)
-
-### JSXSpreadAttribute (jsx)
-
-* argument (Expression)
-
-### JSXText (jsx)
-
-* value (string)
-
-### JSXFragment (jsx)
-
-* openingFragment (JSXOpeningFragment)
-* closingFragment (JSXClosingFragment)
-* children (JSXText \| JSXExpressionContainer \| JSXSpreadChild \| JSXElement \| JSXFragment)
-
-### JSXOpeningFragment (jsx)
-
-
-### JSXClosingFragment (jsx)
-
-
-## TSEntityName
-
-### TSQualifiedName (typescript)
-
-* left 
-* right 
-
-## TSTypeElement
-
-### TSPropertySignature (typescript)
-
-* key 
-* typeAnnotation 
-* initializer 
-
-### TSMethodSignature (typescript)
-
-* key 
-* typeParameters 
-* parameters 
-* typeAnnotation 
-
-### TSIndexSignature (typescript)
-
-* parameters 
-* typeAnnotation 
-
-## TSType
-
-### TSAnyKeyword (typescript)
-
-
-### TSNumberKeyword (typescript)
-
-
-### TSObjectKeyword (typescript)
-
-
-### TSBooleanKeyword (typescript)
-
-
-### TSStringKeyword (typescript)
-
-
-### TSSymbolKeyword (typescript)
-
-
-### TSVoidKeyword (typescript)
-
-
-### TSUndefinedKeyword (typescript)
-
-
-### TSNullKeyword (typescript)
-
-
-### TSNeverKeyword (typescript)
-
-
-### TSThisType (typescript)
-
-
-### TSTypeReference (typescript)
-
-* typeName 
-* typeParameters 
-
-### TSTypePredicate (typescript)
-
-* parameterName 
-* typeAnnotation 
-
-### TSTypeQuery (typescript)
-
-* exprName 
-
-### TSTypeLiteral (typescript)
-
-* members 
-
-### TSArrayType (typescript)
-
-* elementType 
-
-### TSTupleType (typescript)
-
-* elementTypes 
-
-### TSParenthesizedType (typescript)
-
-* typeAnnotation 
-
-### TSTypeOperator (typescript)
-
-* typeAnnotation 
-
-### TSIndexedAccessType (typescript)
-
-* objectType 
-* indexType 
-
-### TSMappedType (typescript)
-
-* typeParameter 
-* typeAnnotation 
-
-### TSLiteralType (typescript)
-
-* literal 
-
-### TSExpressionWithTypeArguments (typescript)
-
-* expression 
-* typeParameters 
+Statement
 
 
